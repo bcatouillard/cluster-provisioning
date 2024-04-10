@@ -5,7 +5,7 @@ resource "tls_private_key" "ssh" {
 
 resource "local_file" "ssh_private_key_pem" {
   content         = tls_private_key.ssh.private_key_pem
-  filename        = "../.ssh/google_compute_engine"
+  filename        = "${abspath("${path.root}/../..")}/.ssh/google_compute_engine"
   file_permission = "0600"
 }
 

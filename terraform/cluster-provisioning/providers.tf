@@ -1,4 +1,8 @@
 terraform {
+  backend "gcs" {
+    bucket = "bcatouillard-gke-tfstate"
+    prefix = "tfstate"
+  }
   required_providers {
     google = {
       source  = "hashicorp/google"
