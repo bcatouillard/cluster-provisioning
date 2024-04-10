@@ -1,0 +1,21 @@
+---
+- name: Install pre-requisites
+  hosts: all
+  become: true
+  tasks: []
+  roles:
+    - role: prepare-cluster
+
+- name: Initialize controlplanes
+  hosts: controlplanes
+  become: true
+  tasks: []
+  roles:
+    - role: master
+
+- name: Initialize Nodes
+  hosts: nodes
+  become: true
+  tasks: []
+  roles:
+    - role: node
