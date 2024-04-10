@@ -1,3 +1,5 @@
 .terraform*
 terraform.*
 .ssh
+hosts/inventory
+.vscode
