@@ -3,29 +3,12 @@ name: Create Terraform infrastructure
 on:
   workflow_dispatch:
 
-env: 
-  GOOGLE_APPLICATION_CREDENTIALS: "${{ secrets.GCP_CREDENTIALS }}"
+env:
+  GOOGLE_CREDENTIALS: "${{ secrets.GCP_CREDENTIALS }}"
 
 jobs:
-  setup-gcloud:
-    name: Setup GCP CLI
-    runs-on: ubuntu-latest
-    steps:
-      - id: auth
-        name: Setup Auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: "Use gcloud CLI"
-        run: "gcloud info"
-
   install-terraform:
     name: Install Terraform
-    needs: setup-gcloud
     runs-on: ubuntu-latest
     outputs:
       stdout: ${{ steps.plan.outputs.stdout }}
