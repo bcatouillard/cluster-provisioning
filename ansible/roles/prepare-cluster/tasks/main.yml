@@ -1,4 +1,10 @@
 ---
+- name: Disable SWAP in fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+
 - name: Update repositories cache & Install ca-certificates, curl, apt-transport-https, gpg
   become: true
   ansible.builtin.apt:
@@ -62,12 +68,12 @@
     dest: /etc/modules-load.d/k8s.conf
     mode: "644"
 
-- name: Allow overlay
+- name: Configure module overlay for containerd
   become: true
   ansible.builtin.command: modprobe overlay
   changed_when: true
 
-- name: Allow br_netfilter
+- name: Configure module br_netfilter for containerd
   become: true
   ansible.builtin.command: modprobe br_netfilter
   changed_when: true
