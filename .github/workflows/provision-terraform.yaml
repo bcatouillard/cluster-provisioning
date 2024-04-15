@@ -22,15 +22,15 @@ jobs:
 
   install-terraform:
     name: Install Terraform
+    needs: setup-gcloud
     runs-on: ubuntu-latest
     outputs:
       stdout: ${{ steps.plan.outputs.stdout }}
       stderr: ${{ steps.plan.outputs.stderr }}
       exitcode: ${{ steps.plan.outputs.exitcode }}
     steps:
+      - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
-
-      - run: cd terraform/cluster-provisioning
 
       - id: init
         run: terraform init
