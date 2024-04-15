@@ -1,4 +1,7 @@
 name: Create Terraform infrastructure
+defaults:
+  run:
+    working-directory: terraform/cluster-provisioning
 
 on:
   workflow_dispatch:
