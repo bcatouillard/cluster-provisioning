@@ -1,0 +1,43 @@
+name: Execute Terraform part
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-gcloud:
+    name: Setup GCP CLI
+    runs-on: ubuntu-latest
+    steps:
+      - id: auth
+        name: Setup Auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+
+  install-terraform:
+    name: Install Terraform
+    runs-on: ubuntu-latest
+    outputs:
+      stdout: ${{ steps.plan.outputs.stdout }}
+      stderr: ${{ steps.plan.outputs.stderr }}
+      exitcode: ${{ steps.plan.outputs.exitcode }}
+    steps:
+      - uses: hashicorp/setup-terraform@v3
+
+      - run: cd terraform/cluster-provisioning
+
+      - id: init
+        run: terraform init
+
+      - id: plan
+        run: terraform plan -no-color
+
+      - run: echo ${{ steps.plan.outputs.stdout }}
+      - run: echo ${{ steps.plan.outputs.stderr }}
+      - run: echo ${{ steps.plan.outputs.exitcode }}
