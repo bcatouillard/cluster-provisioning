@@ -4,26 +4,36 @@
   ansible.builtin.command: kubeadm reset --force
   changed_when: true
 
+- name: Install kubectl
+  ansible.builtin.apt:
+    name: kubectl
+
 - name: Init kubeadm
   become: true
   ansible.builtin.command: kubeadm init
   changed_when: true
 
 - name: Create .kube folder
+  become: true
+  become_user: "{{ ansible_user }}"
   ansible.builtin.file:
     path: "/home/{{ ansible_user }}/.kube"
     state: directory
     mode: "0755"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
 
 - name: Copy kubeconfig
-  become: true
   ansible.builtin.copy:
     remote_src: true
     src: /etc/kubernetes/admin.conf
     dest: "/home/{{ ansible_user }}/.kube/config"
     owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-    mode: "0755"
 
-- name: Install Flannel
-  ansible.builtin.shell: "kubectl apply --kubeconfig=/home/{{ansible_user}}/.kube/config -f |https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml"
+- name: Install Pod Network
+  become: true
+  become_user: "{{ ansible_user }}"
+  shell: kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml >> pod_network_setup.log
+  args:
+    chdir: $HOME
+    creates: pod_network_setup.log
