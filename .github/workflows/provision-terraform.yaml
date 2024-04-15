@@ -3,6 +3,9 @@ name: Create Terraform infrastructure
 on:
   workflow_dispatch:
 
+env: 
+  GOOGLE_APPLICATION_CREDENTIALS: "${{ secrets.GCP_CREDENTIALS }}"
+
 jobs:
   setup-gcloud:
     name: Setup GCP CLI
