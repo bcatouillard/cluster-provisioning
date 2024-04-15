@@ -19,6 +19,18 @@ resource "google_compute_firewall" "allow_ssh" {
   }
 }
 
+resource "google_compute_firewall" "allow_kubernetes" {
+  name          = "allow-kubernetes"
+  network       = google_compute_network.vpc.name
+  target_tags   = ["allow-kubernetes"]
+  source_ranges = ["${google.google_compute_subnetwork.subnet.ip_cidr_range}"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["6443"]
+  }
+}
+
 resource "google_compute_address" "static_ip" {
   for_each = local.instances-map
   name     = "${each.value.name}-static-ip"
