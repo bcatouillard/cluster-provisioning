@@ -119,11 +119,10 @@
   ansible.builtin.apt:
     update_cache: true
 
-- name: Install kubelet, kubectl, kubeadm
+- name: Install kubelet, kubeadm
   become: true
   ansible.builtin.apt:
     pkg:
-      - kubectl
       - kubeadm
       - kubelet
 
