@@ -23,7 +23,7 @@ resource "google_compute_firewall" "allow_kubernetes" {
   name          = "allow-kubernetes"
   network       = google_compute_network.vpc.name
   target_tags   = ["allow-kubernetes"]
-  source_ranges = ["${google.google_compute_subnetwork.subnet.ip_cidr_range}"]
+  source_ranges = ["${google_compute_subnetwork.subnet.ip_cidr_range}"]
 
   allow {
     protocol = "tcp"
@@ -41,7 +41,7 @@ resource "google_compute_instance" "default" {
   name         = each.value.name
   machine_type = "e2-medium"
   zone         = "${var.region}-a"
-  tags         = ["allow-ssh"]
+  tags         = ["allow-ssh", "allow-kubernetes"]
   labels = {
     ansible-group = each.value.label
   }
