@@ -28,12 +28,6 @@
     remote_src: true
     src: /etc/kubernetes/admin.conf
     dest: "/home/{{ ansible_user }}/.kube/config"
+    mode: "0755"
     owner: "{{ ansible_user }}"
-
-- name: Install Pod Network
-  become: true
-  become_user: "{{ ansible_user }}"
-  shell: "kubectl apply --kubeconfig=/home/{{ ansible_user }}/.kube/config -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml >> pod_network_setup.log"
-  args:
-    chdir: $HOME
-    creates: pod_network_setup.log
+    group: "{{ ansible_user }}"

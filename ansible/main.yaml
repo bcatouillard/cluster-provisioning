@@ -19,3 +19,20 @@
   tasks: []
   roles:
     - role: node
+
+- name: Install CNI
+  hosts: controlplanes
+  become: true
+  tasks: []
+  roles:
+    - role: weave
+
+- name: Restart kubelet
+  hosts: all
+  become: true
+  tasks:
+    - name: Enable service kubelet
+      become: true
+      ansible.builtin.service:
+        name: kubelet
+        enabled: true

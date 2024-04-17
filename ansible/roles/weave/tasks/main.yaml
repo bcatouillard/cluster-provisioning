@@ -1,0 +1,5 @@
+---
+- name: Install Flannel
+  become: true
+  become_user: "{{ ansible_user }}"
+  ansible.builtin.shell: "kubectl apply --kubeconfig=/home/{{ ansible_user }}/.kube/config -f https://reweave.azurewebsites.net/k8s/v1.29/net.yaml"
