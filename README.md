@@ -32,10 +32,11 @@ It will create a new Service Account and a SSH key that will be used as a user t
 
 ## Ansible part
 
-It will by using 3 roles, install all dependencies and create a Kubernetes cluster.
+It will by using 4 roles, install all dependencies and create a Kubernetes cluster.
 
-I have defined 3 roles:
+I have defined 4 roles:
 
 - Prepare-cluster: that will install common dependencies such as kubeadm, kubelet, containerd, etc...
 - Master: that will install kubectl and create the cluster
 - Node: that will make the worker node join the cluster previously created.
+- Weave: that will install the CNI (WeaveNet)
